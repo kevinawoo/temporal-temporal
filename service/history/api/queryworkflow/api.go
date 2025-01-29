@@ -192,7 +192,7 @@ func Invoke(
 
 	queryReg := mutableState.GetQueryRegistry()
 	if len(queryReg.GetBufferedIDs()) >= shardContext.GetConfig().MaxBufferedQueryCount() {
-		metrics.QueryBufferExceededCount.With(scope).Record(1)
+		metrics.QueryBufferExceededCount.With(scope.WithTags(metrics.NamespaceTag(namespaceID.String()))).Record(1)
 		return nil, consts.ErrConsistentQueryBufferExceeded
 	}
 	queryID, completionCh := queryReg.BufferQuery(req.GetQuery())
